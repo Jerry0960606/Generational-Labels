@@ -1,0 +1,75 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap');
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", ui-serif, Georgia, serif;
+
+  --color-brand-primary: #006a66;
+  --color-brand-primary-container: #7bcdc8;
+  --color-brand-on-primary-container: #005754;
+  
+  --color-brand-secondary: #7d563e;
+  --color-brand-secondary-container: #fec9ab;
+  --color-brand-on-secondary-container: #79533b;
+
+  --color-brand-tertiary: #63597c;
+  --color-brand-tertiary-container: #c5b9e1;
+  --color-brand-on-tertiary-container: #52486a;
+
+  --color-brand-background: #fff8f5;
+  --color-brand-surface: #fff8f5;
+  --color-brand-surface-container: #f5ece8;
+  --color-brand-surface-container-low: #fbf2ed;
+  --color-brand-surface-container-high: #efe6e2;
+  --color-brand-surface-container-highest: #eae1dc;
+  
+  --color-brand-outline: #6e7978;
+  --color-brand-outline-variant: #bec9c7;
+  --color-brand-on-surface: #1f1b18;
+  --color-brand-on-surface-variant: #3e4948;
+
+  --shadow-offset-primary: 4px 4px 0px 0px #7bcdc8;
+  --shadow-offset-secondary: 4px 4px 0px 0px #fec9ab;
+  --shadow-offset-lavender: 4px 4px 0px 0px #c5b9e1;
+  --shadow-offset-outline: 4px 4px 0px 0px #6e7978;
+  --shadow-offset-bold: 8px 8px 0px 0px #6e7978;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-background text-brand-on-surface font-serif antialiased;
+  }
+}
+
+@layer components {
+  .hand-drawn-border {
+    border: 2px solid var(--color-brand-outline);
+    border-radius: 12px 16px 14px 18px / 18px 14px 16px 12px;
+  }
+  
+  .paper-offset {
+    @apply shadow-offset-secondary;
+  }
+
+  .paper-offset-alt {
+    @apply shadow-offset-primary;
+  }
+
+  .wavy-underline {
+    position: relative;
+    display: inline-block;
+  }
+
+  .wavy-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: radial-gradient(circle at 10px 0, transparent 10px, var(--color-brand-primary-container) 11px) repeat-x;
+    background-size: 20px 20px;
+    z-index: -1;
+  }
+}
