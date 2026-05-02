@@ -15,7 +15,10 @@ export const MobileNav: React.FC = () => {
   ];
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-brand-background/95 backdrop-blur-md border-t-2 border-brand-outline/20">
+    <nav 
+      className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-brand-background/95 backdrop-blur-md border-t-2 border-brand-outline/20"
+      style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 12px)' }}
+    >
       <div className="flex items-stretch justify-around">
         {navItems.map((item) => (
           <NavLink
