@@ -314,8 +314,8 @@ export const ActionGuide: React.FC = () => {
             </h4>
             <p className="text-sm text-brand-on-surface/60 font-sans font-medium mb-6">
               {en
-                ? '"Hey [Grandparent/Child], I saw this interesting prompt on Generational Bridges and was wondering…"'
-                : '『嘿，我想跟你聊聊，我最近在「世代之橋」網站上看到一個有趣的話題...』'}
+                ? '"Hey [Grandparent/Child], I saw this interesting prompt on Generational Labels and was wondering…"'
+                : '『嘿，我想跟你聊聊，我最近在「世代標籤」網站上看到一個有趣的話題...』'}
             </p>
             <p className="text-[10px] uppercase font-sans font-bold tracking-[0.2em] text-brand-primary/50">
               {en ? 'Use the AI Spark above to get a personalised version ↑' : '使用上方的 AI 對話啟動器獲得個人化版本 ↑'}

@@ -214,8 +214,8 @@ export const FamilyRoom: React.FC = () => {
         </h2>
         <p className="text-brand-on-surface/60 max-w-xl mx-auto font-sans font-medium text-sm leading-relaxed">
           {language === 'en'
-            ? "Our family room expands with every shared breath. Whether it's a blurry photo, a scanned recipe, or a simple 'I'm thinking of you,' your contribution builds the bridge."
-            : "故事牆隨著每一次的分享而豐富。無論是一張模糊的老相片、一份掃描的食譜，或是一句簡單的『我想你』，你的每一份分享都在穩固這座代際之橋。"}
+            ? "Our family room expands with every shared breath. Whether it's a blurry photo, a scanned recipe, or a simple 'I'm thinking of you,' your contribution builds the labels."
+            : "故事牆隨著每一次的分享而豐富。無論是一張模糊的老相片、一份掃描的食譜，或是一句簡單的『我想你』，你的每一份分享都在穩固這座世代標籤。"}
         </p>
         <OffsetButton onClick={() => navigate('/submit')} variant="primary" className="mx-auto">
           {t('shareStory')}

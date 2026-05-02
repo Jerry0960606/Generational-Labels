@@ -19,10 +19,10 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <NavLink to="/" className="flex items-center gap-2 group">
           <div className="w-10 h-10 bg-brand-primary-container rounded-full flex items-center justify-center hand-drawn-border paper-offset-alt group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:shadow-none transition-all">
-            <span className="text-xl font-bold font-serif text-brand-on-primary-container">GB</span>
+            <span className="text-xl font-bold font-serif text-brand-on-primary-container">GL</span>
           </div>
           <span className="text-2xl font-serif font-bold tracking-tight text-brand-primary hidden sm:inline-block">
-            Generational <span className="text-brand-secondary">Bridges</span>
+            Generational <span className="text-brand-secondary">Labels</span>
           </span>
         </NavLink>
 

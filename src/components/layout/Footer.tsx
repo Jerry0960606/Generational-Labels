@@ -12,7 +12,7 @@ export const Footer: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <TypographicOrnament variant="flower" className="text-2xl" />
-            <h3 className="text-xl font-serif font-bold text-brand-primary">Generational Bridges</h3>
+            <h3 className="text-xl font-serif font-bold text-brand-primary">Generational Labels</h3>
           </div>
           <p className="text-sm text-brand-on-surface/70 leading-relaxed max-w-xs">
             {t('heroDesc').slice(0, 100)}...
@@ -28,7 +28,7 @@ export const Footer: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-brand-outline/5 text-center text-[10px] uppercase tracking-tighter text-brand-on-surface/40 font-sans font-bold">
-        <p>© 2026 Generational Bridge</p>
+        <p>© 2026 Generational Labels</p>
       </div>
     </footer>
   );

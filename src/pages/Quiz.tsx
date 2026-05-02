@@ -153,8 +153,8 @@ export const Quiz: React.FC = () => {
 
   const handleCopyResult = () => {
     const text = language === 'en'
-      ? `I took the Generational Bridges Culture Quiz and I'm "${t(result.titleKey)}" ${result.icon}\n\n${t(result.traitsKey)}\n\nDiscover yours at Generational Bridges!`
-      : `我剛完成了世代之橋文化測驗，我是「${t(result.titleKey)}」${result.icon}\n\n${t(result.traitsKey)}\n\n快來 Generational Bridges 測測你是哪一型！`;
+      ? `I took the Generational Labels Culture Quiz and I'm "${t(result.titleKey)}" ${result.icon}\n\n${t(result.traitsKey)}\n\nDiscover yours at Generational Labels!`
+      : `我剛完成了世代標籤文化測驗，我是「${t(result.titleKey)}」${result.icon}\n\n${t(result.traitsKey)}\n\n快來 Generational Labels 測測你是哪一型！`;
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
