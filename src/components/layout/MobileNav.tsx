@@ -23,7 +23,7 @@ export const MobileNav: React.FC = () => {
             to={item.path}
             end={item.path === '/'}
             className={({ isActive }) =>
-              `flex flex-col items-center justify-center gap-1 py-3 px-2 flex-1 transition-colors ${
+              `flex flex-col items-center justify-center gap-1 py-3 px-2 flex-1 transition-colors relative ${
                 isActive
                   ? 'text-brand-primary'
                   : 'text-brand-on-surface/40 hover:text-brand-primary'
@@ -37,7 +37,7 @@ export const MobileNav: React.FC = () => {
                   {item.name}
                 </span>
                 {isActive && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-brand-primary rounded-full" />
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-brand-primary rounded-full pointer-events-none" />
                 )}
               </>
             )}

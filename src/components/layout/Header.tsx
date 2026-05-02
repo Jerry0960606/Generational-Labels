@@ -59,8 +59,8 @@ export const Header: React.FC = () => {
             </button>
           </div>
 
-          <NavLink to="/submit" className="hidden sm:block">
-            <button className="px-4 py-2 bg-brand-secondary text-brand-background rounded-full font-sans font-bold text-xs hover:bg-brand-secondary/90 transition-colors">
+          <NavLink to="/submit">
+            <button className="px-3 py-1.5 sm:px-4 sm:py-2 bg-brand-secondary text-brand-background rounded-full font-sans font-bold text-[10px] sm:text-xs hover:bg-brand-secondary/90 transition-colors">
               {t('shareStory')}
             </button>
           </NavLink>

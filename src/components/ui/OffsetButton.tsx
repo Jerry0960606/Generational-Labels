@@ -30,6 +30,7 @@ export const OffsetButton: React.FC<OffsetButtonProps> = ({
       className={`
         px-6 py-2 rounded-lg font-sans font-bold transition-all
         active:translate-x-1 active:translate-y-1 active:shadow-none
+        disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed
         ${shadows[variant]}
         ${bgColors[variant]}
         ${className}
