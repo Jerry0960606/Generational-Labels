@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TypographicOrnament } from '../components/ui/TypographicOrnament';
 import { OffsetButton } from '../components/ui/OffsetButton';
-import { Trophy, RefreshCcw, ArrowRight } from 'lucide-react';
+import { Trophy, RefreshCcw, ArrowRight, Copy, Check, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -127,6 +127,7 @@ export const Quiz: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleAnswer = (points: number) => {
     setScore(score + points);
@@ -141,6 +142,7 @@ export const Quiz: React.FC = () => {
     setCurrentStep(0);
     setScore(0);
     setIsFinished(false);
+    setCopied(false);
   };
 
   const getResult = () => {
@@ -148,6 +150,16 @@ export const Quiz: React.FC = () => {
   };
 
   const result = getResult();
+
+  const handleCopyResult = () => {
+    const text = language === 'en'
+      ? `I took the Generational Bridges Culture Quiz and I'm "${t(result.titleKey)}" ${result.icon}\n\n${t(result.traitsKey)}\n\nDiscover yours at Generational Bridges!`
+      : `我剛完成了世代之橋文化測驗，我是「${t(result.titleKey)}」${result.icon}\n\n${t(result.traitsKey)}\n\n快來 Generational Bridges 測測你是哪一型！`;
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    });
+  };
 
   return (
     <div className="py-12 px-6 max-w-4xl mx-auto">
@@ -255,7 +267,29 @@ export const Quiz: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex justify-center pt-8">
+              <div className="mt-4 max-w-2xl mx-auto p-5 bg-brand-surface-container-highest rounded-2xl border border-brand-outline/10 text-center">
+                <p className="text-[10px] font-sans font-black uppercase tracking-widest text-brand-on-surface/40 mb-3">
+                  {t('quizShareTitle')}
+                </p>
+                <div className="flex flex-wrap justify-center gap-3">
+                  <button
+                    onClick={handleCopyResult}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-brand-primary text-brand-background rounded-full text-xs font-bold font-sans transition-all hover:bg-brand-primary/90 active:scale-95"
+                  >
+                    {copied ? <Check size={14} /> : <Copy size={14} />}
+                    {copied ? t('quizShareCopied') : t('quizShareCopy')}
+                  </button>
+                  <button
+                    onClick={() => navigate('/family-room')}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-brand-secondary text-brand-background rounded-full text-xs font-bold font-sans transition-all hover:bg-brand-secondary/90 active:scale-95"
+                  >
+                    <Heart size={14} />
+                    {t('quizGoToStories')}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex justify-center pt-6">
                 <OffsetButton onClick={resetQuiz} variant="primary" className="flex items-center gap-2">
                   <RefreshCcw size={18} /> {t('takeAgain')}
                 </OffsetButton>
