@@ -124,10 +124,18 @@ export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     let audioUrl = '';
     
     if (audioBlob && storage) {
-      const audioName = `voice_${Date.now()}_${currentAuthorId}.webm`;
-      const audioRef = ref(storage, `stories/audio/${audioName}`);
-      await uploadBytes(audioRef, audioBlob);
-      audioUrl = await getDownloadURL(audioRef);
+      try {
+        console.log("Starting audio upload...");
+        const audioName = `voice_${Date.now()}_${currentAuthorId}.webm`;
+        const audioRef = ref(storage, `stories/audio/${audioName}`);
+        await uploadBytes(audioRef, audioBlob);
+        console.log("Audio upload successful, getting URL...");
+        audioUrl = await getDownloadURL(audioRef);
+        console.log("Audio URL acquired:", audioUrl);
+      } catch (err) {
+        console.error("Audio upload failed:", err);
+        throw new Error("語音上傳失敗，請檢查 Firebase Storage 權限設置。");
+      }
     }
 
     const storyData = {
