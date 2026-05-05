@@ -10,16 +10,12 @@ export const Onboarding: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
-    if (!hasSeenOnboarding) {
-      // Small delay for better UX
-      const timer = setTimeout(() => setIsVisible(true), 1000);
-      return () => clearTimeout(timer);
-    }
+    // Small delay for better UX
+    const timer = setTimeout(() => setIsVisible(true), 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleClose = () => {
-    localStorage.setItem('hasSeenOnboarding', 'true');
     setIsVisible(false);
   };
 
