@@ -54,7 +54,7 @@ export const SubmitStory: React.FC = () => {
         role: formData.role || 'Family Member',
         category: formData.category,
         content: formData.content,
-        image: selectedImage || undefined,
+        ...(selectedImage ? { image: selectedImage } : {}),
         color: formData.category === 'Memory' ? 'primary' : formData.category === 'Advice' ? 'secondary' : 'lavender'
       });
       setIsSubmitting(false);
