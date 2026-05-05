@@ -44,8 +44,8 @@ export const SubmitStory: React.FC = () => {
     fileInputRef.current?.click();
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent | React.MouseEvent) => {
+    if (e) e.preventDefault();
     setIsSubmitting(true);
 
     try {
@@ -60,8 +60,9 @@ export const SubmitStory: React.FC = () => {
       setIsSubmitting(false);
       setSubmitted(true);
       setTimeout(() => navigate('/family-room'), 3000);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting story:", error);
+      alert(`Oops! 提交故事時發生錯誤：\n${error.message || '發生未知錯誤'}\n\n如果您剛設定 Firebase，請檢查 Firestore 的 Security Rules 是否允許寫入。`);
       setIsSubmitting(false);
     }
   };
@@ -231,7 +232,8 @@ export const SubmitStory: React.FC = () => {
         <div className="pt-8 border-t border-brand-outline/10">
           <OffsetButton
             disabled={isSubmitting}
-            type="submit"
+            type="button"
+            onClick={handleSubmit}
             variant="secondary"
             className="w-full flex items-center justify-center gap-2 py-4"
           >
