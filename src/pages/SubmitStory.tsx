@@ -25,11 +25,47 @@ export const SubmitStory: React.FC = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
+      const imageUrl = URL.createObjectURL(file);
+      const img = new window.Image();
+      
+      img.onload = () => {
+        URL.revokeObjectURL(imageUrl);
+        
+        // Calculate new dimensions to ensure the image isn't too large
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 800;
+        let width = img.width;
+        let height = img.height;
+        
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+        
+        // Create canvas to resize and compress
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // Compress as JPEG with 0.7 quality to reduce base64 string size 
+          // well below Firestore's 1MB limit
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+          setSelectedImage(compressedDataUrl);
+        }
       };
-      reader.readAsDataURL(file);
+      
+      img.src = imageUrl;
     }
   };
 
