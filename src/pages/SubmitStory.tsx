@@ -13,6 +13,7 @@ export const SubmitStory: React.FC = () => {
   const { addStory } = useStories();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showIllustrationModal, setShowIllustrationModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -78,6 +79,21 @@ export const SubmitStory: React.FC = () => {
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const illustrations = [
+    { id: 'radio', path: '/assets/illustrations/radio.png', label: language === 'en' ? 'Antique Radio' : '古董收音機' },
+    { id: 'vinyl', path: '/assets/illustrations/vinyl.png', label: language === 'en' ? 'Vinyl Player' : '黑膠唱機' },
+    { id: 'cassette', path: '/assets/illustrations/cassette.png', label: language === 'en' ? 'Cassette Tape' : '卡式錄音帶' },
+    { id: 'gameboy', path: '/assets/illustrations/gameboy.png', label: language === 'en' ? 'Game Console' : '復古遊戲機' },
+    { id: 'smartphone', path: '/assets/illustrations/smartphone.png', label: language === 'en' ? 'Smartphone' : '智慧型手機' },
+    { id: 'bridge', path: '/assets/illustrations/bridge.png', label: language === 'en' ? 'Bridge' : '連結之橋' },
+  ];
+
+  const handleIllustrationSelect = (path: string) => {
+    // Convert public path to absolute URL or just keep it as is if hosted relatively
+    setSelectedImage(path);
+    setShowIllustrationModal(false);
   };
 
   const handleSubmit = async (e?: React.FormEvent | React.MouseEvent) => {
@@ -232,10 +248,14 @@ export const SubmitStory: React.FC = () => {
               <Image size={18} />
               <span className="text-xs font-bold font-sans">{t('attachPhoto')}</span>
             </button>
-            <div className="flex items-center gap-2 text-brand-on-surface/40 hover:text-brand-secondary cursor-pointer transition-colors">
+            <button 
+              type="button"
+              onClick={() => setShowIllustrationModal(true)}
+              className="flex items-center gap-2 text-brand-on-surface/40 hover:text-brand-secondary cursor-pointer transition-colors"
+            >
               <PenTool size={18} />
               <span className="text-xs font-bold font-sans">{t('addIllustration')}</span>
-            </div>
+            </button>
           </div>
 
           <AnimatePresence>
@@ -283,6 +303,67 @@ export const SubmitStory: React.FC = () => {
              </OffsetButton>
         </div>
       </form>
+
+      {/* Illustration Selection Modal */}
+      <AnimatePresence>
+        {showIllustrationModal && (
+          <div className="fixed inset-0 z-[150] flex items-center justify-center p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowIllustrationModal(false)}
+              className="absolute inset-0 bg-brand-on-surface/40 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative w-full max-w-2xl bg-brand-background hand-drawn-border shadow-offset-bold p-8 space-y-6"
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-serif font-bold text-brand-primary">
+                  {language === 'en' ? 'Pick an Illustration' : '選擇一個插圖'}
+                </h3>
+                <button 
+                  onClick={() => setShowIllustrationModal(false)}
+                  className="p-2 hover:bg-brand-surface rounded-full transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 overflow-y-auto max-h-[60vh] p-2">
+                {illustrations.map((illus) => (
+                  <button
+                    key={illus.id}
+                    type="button"
+                    onClick={() => handleIllustrationSelect(illus.path)}
+                    className="group space-y-2 text-left focus:outline-none"
+                  >
+                    <div className="aspect-square bg-brand-surface hand-drawn-border overflow-hidden group-hover:shadow-offset-primary transition-all group-active:scale-95">
+                      <img 
+                        src={illus.path} 
+                        alt={illus.label} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-brand-on-surface/40 group-hover:text-brand-primary transition-colors">
+                      {illus.label}
+                    </p>
+                  </button>
+                ))}
+              </div>
+
+              <div className="pt-4 text-center">
+                <p className="text-xs text-brand-on-surface/40 font-sans italic">
+                  {language === 'en' ? 'These hand-drawn pieces help bring your story to life.' : '這些手繪插圖能讓你的故事更加生動。'}
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
