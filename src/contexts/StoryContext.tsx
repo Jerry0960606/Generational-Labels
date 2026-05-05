@@ -16,6 +16,7 @@ export interface Story {
   category: 'Memory' | 'Advice' | 'Observation';
   date: string;
   image?: string;
+  emoji?: string;
   color: 'primary' | 'secondary' | 'lavender' | 'outline';
   likes: number;
   comments: Comment[];

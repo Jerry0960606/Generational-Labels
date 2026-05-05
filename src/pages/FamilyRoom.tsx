@@ -115,6 +115,12 @@ export const FamilyRoom: React.FC = () => {
                 </div>
               )}
 
+              {story.emoji && !story.image && (
+                <div className="mb-4 rounded-xl h-48 bg-brand-surface-container flex items-center justify-center text-8xl hand-drawn-border">
+                  {story.emoji}
+                </div>
+              )}
+
               <p className="text-brand-on-surface/70 font-sans italic leading-relaxed mb-6">
                 "{story.content}"
               </p>

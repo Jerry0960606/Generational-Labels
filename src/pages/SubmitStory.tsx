@@ -13,8 +13,9 @@ export const SubmitStory: React.FC = () => {
   const { addStory } = useStories();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [showIllustrationModal, setShowIllustrationModal] = useState(false);
+  const [showEmojiModal, setShowEmojiModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     role: '',
@@ -81,19 +82,24 @@ export const SubmitStory: React.FC = () => {
     fileInputRef.current?.click();
   };
 
-  const illustrations = [
-    { id: 'radio', path: '/assets/illustrations/radio.png', label: language === 'en' ? 'Antique Radio' : '古董收音機' },
-    { id: 'vinyl', path: '/assets/illustrations/vinyl.png', label: language === 'en' ? 'Vinyl Player' : '黑膠唱機' },
-    { id: 'cassette', path: '/assets/illustrations/cassette.png', label: language === 'en' ? 'Cassette Tape' : '卡式錄音帶' },
-    { id: 'gameboy', path: '/assets/illustrations/gameboy.png', label: language === 'en' ? 'Game Console' : '復古遊戲機' },
-    { id: 'smartphone', path: '/assets/illustrations/smartphone.png', label: language === 'en' ? 'Smartphone' : '智慧型手機' },
-    { id: 'bridge', path: '/assets/illustrations/bridge.png', label: language === 'en' ? 'Bridge' : '連結之橋' },
+  const EMOJI_CATEGORIES = [
+    { 
+      label: language === 'en' ? 'Generations' : '世代象徵', 
+      emojis: ['📻', '📺', '📼', '🎮', '📱', '🤖', '☎️', '💿', '💻', '📷'] 
+    },
+    { 
+      label: language === 'en' ? 'Family & Life' : '家庭與生活', 
+      emojis: ['🏠', '🌳', '📜', '💌', '🕰️', '🫂', '🥘', '🍵', '👶', '👴'] 
+    },
+    { 
+      label: language === 'en' ? 'Feelings' : '情感與回憶', 
+      emojis: ['❤️', '✨', '💭', '📸', '🌿', '☕', '🕯️', '🌸', '💫', '🌻'] 
+    }
   ];
 
-  const handleIllustrationSelect = (path: string) => {
-    // Convert public path to absolute URL or just keep it as is if hosted relatively
-    setSelectedImage(path);
-    setShowIllustrationModal(false);
+  const handleEmojiSelect = (emoji: string) => {
+    setSelectedEmoji(emoji);
+    setShowEmojiModal(false);
   };
 
   const handleSubmit = async (e?: React.FormEvent | React.MouseEvent) => {
@@ -107,6 +113,7 @@ export const SubmitStory: React.FC = () => {
         category: formData.category,
         content: formData.content,
         ...(selectedImage ? { image: selectedImage } : {}),
+        ...(selectedEmoji ? { emoji: selectedEmoji } : {}),
         color: formData.category === 'Memory' ? 'primary' : formData.category === 'Advice' ? 'secondary' : 'lavender'
       });
       setIsSubmitting(false);
@@ -250,39 +257,63 @@ export const SubmitStory: React.FC = () => {
             </button>
             <button 
               type="button"
-              onClick={() => setShowIllustrationModal(true)}
+              onClick={() => setShowEmojiModal(true)}
               className="flex items-center gap-2 text-brand-on-surface/40 hover:text-brand-secondary cursor-pointer transition-colors"
             >
-              <PenTool size={18} />
-              <span className="text-xs font-bold font-sans">{t('addIllustration')}</span>
+              <Sparkles size={18} />
+              <span className="text-xs font-bold font-sans">{t('addEmoji')}</span>
             </button>
           </div>
 
-          <AnimatePresence>
-            {selectedImage && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="relative inline-block"
-              >
-                <div className="relative w-32 h-32 hand-drawn-border overflow-hidden">
-                  <img 
-                    src={selectedImage} 
-                    alt="Preview" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={removeImage}
-                  className="absolute -top-2 -right-2 w-6 h-6 bg-brand-primary text-brand-background rounded-full flex items-center justify-center shadow-md hover:bg-brand-primary/90 transition-colors"
+          <div className="flex flex-wrap gap-4">
+            <AnimatePresence>
+              {selectedImage && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="relative inline-block"
                 >
-                  <X size={12} />
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  <div className="relative w-32 h-32 hand-drawn-border overflow-hidden">
+                    <img 
+                      src={selectedImage} 
+                      alt="Preview" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-brand-primary text-brand-background rounded-full flex items-center justify-center shadow-md hover:bg-brand-primary/90 transition-colors"
+                  >
+                    <X size={12} />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {selectedEmoji && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="relative inline-block"
+                >
+                  <div className="w-32 h-32 hand-drawn-border bg-brand-surface flex items-center justify-center text-6xl">
+                    {selectedEmoji}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedEmoji(null)}
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-brand-primary text-brand-background rounded-full flex items-center justify-center shadow-md hover:bg-brand-primary/90 transition-colors"
+                  >
+                    <X size={12} />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         <div className="pt-8 border-t border-brand-outline/10">
@@ -304,61 +335,55 @@ export const SubmitStory: React.FC = () => {
         </div>
       </form>
 
-      {/* Illustration Selection Modal */}
+      {/* Emoji Selection Modal */}
       <AnimatePresence>
-        {showIllustrationModal && (
+        {showEmojiModal && (
           <div className="fixed inset-0 z-[150] flex items-center justify-center p-6">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setShowIllustrationModal(false)}
+              onClick={() => setShowEmojiModal(false)}
               className="absolute inset-0 bg-brand-on-surface/40 backdrop-blur-sm"
             />
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-2xl bg-brand-background hand-drawn-border shadow-offset-bold p-8 space-y-6"
+              className="relative w-full max-w-xl bg-brand-background hand-drawn-border shadow-offset-bold p-8 space-y-6"
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-2xl font-serif font-bold text-brand-primary">
-                  {language === 'en' ? 'Pick an Illustration' : '選擇一個插圖'}
+                  {language === 'en' ? 'Pick an Emoji' : '選擇一個表情符號'}
                 </h3>
                 <button 
-                  onClick={() => setShowIllustrationModal(false)}
+                  onClick={() => setShowEmojiModal(false)}
                   className="p-2 hover:bg-brand-surface rounded-full transition-colors"
                 >
                   <X size={20} />
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 overflow-y-auto max-h-[60vh] p-2">
-                {illustrations.map((illus) => (
-                  <button
-                    key={illus.id}
-                    type="button"
-                    onClick={() => handleIllustrationSelect(illus.path)}
-                    className="group space-y-2 text-left focus:outline-none"
-                  >
-                    <div className="aspect-square bg-brand-surface hand-drawn-border overflow-hidden group-hover:shadow-offset-primary transition-all group-active:scale-95">
-                      <img 
-                        src={illus.path} 
-                        alt={illus.label} 
-                        className="w-full h-full object-cover"
-                      />
+              <div className="space-y-6 overflow-y-auto max-h-[60vh] p-2">
+                {EMOJI_CATEGORIES.map((cat) => (
+                  <div key={cat.label} className="space-y-3">
+                    <h4 className="text-[10px] font-sans font-black uppercase tracking-widest text-brand-on-surface/40">
+                      {cat.label}
+                    </h4>
+                    <div className="flex flex-wrap gap-3">
+                      {cat.emojis.map((emoji) => (
+                        <button
+                          key={emoji}
+                          type="button"
+                          onClick={() => handleEmojiSelect(emoji)}
+                          className="w-12 h-12 flex items-center justify-center text-3xl bg-brand-surface border border-brand-outline/10 rounded-xl hover:shadow-offset-primary transition-all active:scale-95"
+                        >
+                          {emoji}
+                        </button>
+                      ))}
                     </div>
-                    <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-brand-on-surface/40 group-hover:text-brand-primary transition-colors">
-                      {illus.label}
-                    </p>
-                  </button>
+                  </div>
                 ))}
-              </div>
-
-              <div className="pt-4 text-center">
-                <p className="text-xs text-brand-on-surface/40 font-sans italic">
-                  {language === 'en' ? 'These hand-drawn pieces help bring your story to life.' : '這些手繪插圖能讓你的故事更加生動。'}
-                </p>
               </div>
             </motion.div>
           </div>

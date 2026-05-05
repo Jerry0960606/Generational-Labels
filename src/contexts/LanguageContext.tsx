@@ -160,7 +160,7 @@ export const translations: Translations = {
   categoryLabel: { en: 'Story Type', zh: '故事類型' },
   storyPlaceholder: { en: 'Start with a small moment — a phrase your grandparent always said, a smell that takes you back...', zh: '從一個小片刻開始——長輩常說的一句話，一個讓你瞬間回到過去的氣味……' },
   attachPhoto: { en: 'Attach a Photo', zh: '附上一張照片' },
-  addIllustration: { en: 'Add Illustration', zh: '加入插圖' },
+  addEmoji: { en: 'Add Emoji', zh: '加入表情符號' },
   sendStory: { en: 'Send to the Story Wall', zh: '送到故事牆' },
 
   // Roles
