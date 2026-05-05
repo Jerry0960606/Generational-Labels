@@ -54,7 +54,7 @@ export const Onboarding: React.FC = () => {
               </div>
               <TypographicOrnament variant="flower" className="text-4xl" />
               <h2 className="text-3xl font-serif font-bold text-brand-primary flex items-center justify-center gap-2">
-                <Sparkles size={28} className="text-brand-secondary" /> {t('onboardingWelcome')}
+                <Sparkles size={28} className="text-brand-secondary" /> {language === 'en' ? 'Welcome to GL!' : '歡迎來到 GL！'}
               </h2>
               <p className="text-brand-on-surface/70 font-sans font-medium leading-relaxed">
                 {t('onboardingIntro')}
