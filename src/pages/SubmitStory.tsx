@@ -44,25 +44,26 @@ export const SubmitStory: React.FC = () => {
     fileInputRef.current?.click();
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Add real story to global state
-    addStory({
-      author: formData.name,
-      role: formData.role || 'Family Member',
-      category: formData.category,
-      content: formData.content,
-      image: selectedImage || undefined,
-      color: formData.category === 'Memory' ? 'primary' : formData.category === 'Advice' ? 'secondary' : 'lavender'
-    });
 
-    setTimeout(() => {
+    try {
+      await addStory({
+        author: formData.name,
+        role: formData.role || 'Family Member',
+        category: formData.category,
+        content: formData.content,
+        image: selectedImage || undefined,
+        color: formData.category === 'Memory' ? 'primary' : formData.category === 'Advice' ? 'secondary' : 'lavender'
+      });
       setIsSubmitting(false);
       setSubmitted(true);
       setTimeout(() => navigate('/family-room'), 3000);
-    }, 1500);
+    } catch (error) {
+      console.error("Error submitting story:", error);
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -241,7 +242,7 @@ export const SubmitStory: React.FC = () => {
                 <Send size={20} /> {t('sendStory')}
               </>
             )}
-          </OffsetButton>
+             </OffsetButton>
         </div>
       </form>
     </div>

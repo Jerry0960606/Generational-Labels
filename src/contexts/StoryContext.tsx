@@ -78,34 +78,38 @@ const migrateStories = (raw: Story[]): Story[] =>
   raw.map(s => ({ comments: [], ...s }));
 
 export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [stories, setStories] = useState<Story[]>(() => {
-    const saved = localStorage.getItem('generational_stories');
-    return saved ? migrateStories(JSON.parse(saved)) : INITIAL_STORIES;
-  });
+  const [stories, setStories] = useState<Story[]>(INITIAL_STORIES);
+  const [loadedFromFirebase, setLoadedFromFirebase] = useState(false);
 
   useEffect(() => {
-    if (!db) return;
-    
+    if (!db) {
+      // fallback: use localStorage if Firebase not connected
+      const saved = localStorage.getItem('generational_stories');
+      if (saved) setStories(migrateStories(JSON.parse(saved)));
+      return;
+    }
+
     const q = query(collection(db, 'stories'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const fetchedStories = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       })) as Story[];
-      
+
+      // If Firestore is empty on first load, show INITIAL_STORIES
+      if (fetchedStories.length === 0 && !loadedFromFirebase) {
+        setLoadedFromFirebase(true);
+        return;
+      }
+
       setStories(fetchedStories);
+      setLoadedFromFirebase(true);
     }, (error) => {
       console.error("Error fetching stories:", error);
     });
 
     return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    if (!db) {
-      localStorage.setItem('generational_stories', JSON.stringify(stories));
-    }
-  }, [stories]);
 
   const addStory = async (newStory: Omit<Story, 'id' | 'likes' | 'date' | 'comments'>) => {
     const storyData = {
