@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
 import { collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export interface Comment {
   id: string;
@@ -22,11 +23,12 @@ export interface Story {
   comments: Comment[];
   createdAt?: number;
   authorId?: string;
+  audioUrl?: string;
 }
 
 interface StoryContextType {
   stories: Story[];
-  addStory: (story: Omit<Story, 'id' | 'likes' | 'date' | 'comments' | 'authorId'>) => Promise<void>;
+  addStory: (story: Omit<Story, 'id' | 'likes' | 'date' | 'comments' | 'authorId'>, audioBlob?: Blob) => Promise<void>;
   likeStory: (id: string) => Promise<void>;
   addComment: (storyId: string, text: string) => Promise<void>;
   deleteStory: (id: string) => Promise<void>;
@@ -118,9 +120,19 @@ export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return () => unsubscribe();
   }, []);
 
-  const addStory = async (newStory: Omit<Story, 'id' | 'likes' | 'date' | 'comments' | 'authorId'>) => {
+  const addStory = async (newStory: Omit<Story, 'id' | 'likes' | 'date' | 'comments' | 'authorId'>, audioBlob?: Blob) => {
+    let audioUrl = '';
+    
+    if (audioBlob && storage) {
+      const audioName = `voice_${Date.now()}_${currentAuthorId}.webm`;
+      const audioRef = ref(storage, `stories/audio/${audioName}`);
+      await uploadBytes(audioRef, audioBlob);
+      audioUrl = await getDownloadURL(audioRef);
+    }
+
     const storyData = {
       ...newStory,
+      audioUrl,
       authorId: currentAuthorId,
       date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
       likes: 0,

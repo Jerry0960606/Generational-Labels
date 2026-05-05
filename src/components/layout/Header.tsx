@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Compass, Home, BookOpen, MessageCircle, Heart, Languages } from 'lucide-react';
+import { Compass, Home, BookOpen, MessageCircle, Heart, Languages, ArrowLeftRight, Library } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 
 export const Header: React.FC = () => {
@@ -9,6 +9,8 @@ export const Header: React.FC = () => {
   const navItems = [
     { name: t('home'), path: '/', icon: Home },
     { name: t('explorer'), path: '/explorer', icon: Compass },
+    { name: t('navComparison'), path: '/comparison', icon: ArrowLeftRight },
+    { name: t('navDictionary'), path: '/dictionary', icon: Library },
     { name: t('familyRoom'), path: '/family-room', icon: Heart },
     { name: t('actionGuide'), path: '/action-guide', icon: BookOpen },
     { name: t('bridgeQuiz'), path: '/quiz', icon: MessageCircle },

@@ -17,6 +17,8 @@ export const translations: Translations = {
   actionGuide: { en: 'Tips', zh: '溝通技巧' },
   bridgeQuiz: { en: 'Quiz', zh: '測驗' },
   shareStory: { en: 'Write Story', zh: '分享故事' },
+  navComparison: { en: 'Comparison', zh: '世代對照' },
+  navDictionary: { en: 'Dictionary', zh: '流行語辭典' },
 
   // Home Page
   heroTitle: { en: 'Connecting', zh: '跨越' },
@@ -200,6 +202,13 @@ export const translations: Translations = {
   explorerCommunication: { en: 'Communication Style', zh: '溝通風格' },
   explorerWorkplace: { en: 'Workplace Values', zh: '職場價值觀' },
   explorerContext: { en: 'Historical Context', zh: '歷史背景' },
+  comparisonTitle: { en: 'Generation Comparison', zh: '世代對照模式' },
+  comparisonDesc: { en: 'Contrast the values and cultures of different eras side-by-side.', zh: '橫向對比不同世代的價值觀與文化特徵。' },
+  dictionaryTitle: { en: 'Generational Dictionary', zh: '世代流行語辭典' },
+  dictionaryDesc: { en: 'A collection of terms and slang that define each era.', zh: '收集並解讀每個時代最具代表性的用語與流行語。' },
+  comparisonSelect1: { en: 'Select First Generation', zh: '選擇第一個世代' },
+  comparisonSelect2: { en: 'Select Second Generation', zh: '選擇第二個世代' },
+  dictionarySearch: { en: 'Search slang or meaning...', zh: '搜尋用語或含義...' },
 };
 
 interface LanguageContextType {
