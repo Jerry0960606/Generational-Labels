@@ -20,14 +20,16 @@ export interface Story {
   likes: number;
   comments: Comment[];
   createdAt?: number;
+  authorId?: string;
 }
 
 interface StoryContextType {
   stories: Story[];
-  addStory: (story: Omit<Story, 'id' | 'likes' | 'date' | 'comments'>) => Promise<void>;
+  addStory: (story: Omit<Story, 'id' | 'likes' | 'date' | 'comments' | 'authorId'>) => Promise<void>;
   likeStory: (id: string) => Promise<void>;
   addComment: (storyId: string, text: string) => Promise<void>;
   deleteStory: (id: string) => Promise<void>;
+  currentAuthorId: string;
 }
 
 const INITIAL_STORIES: Story[] = [
@@ -78,6 +80,18 @@ const migrateStories = (raw: Story[]): Story[] =>
   raw.map(s => ({ comments: [], ...s }));
 
 export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [currentAuthorId] = useState<string>(() => {
+    try {
+      let id = localStorage.getItem('gb_author_id');
+      if (!id) {
+        id = Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('gb_author_id', id);
+      }
+      return id;
+    } catch {
+      return Math.random().toString(36).substr(2, 9);
+    }
+  });
   const [stories, setStories] = useState<Story[]>(INITIAL_STORIES);
 
   useEffect(() => {
@@ -103,9 +117,10 @@ export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return () => unsubscribe();
   }, []);
 
-  const addStory = async (newStory: Omit<Story, 'id' | 'likes' | 'date' | 'comments'>) => {
+  const addStory = async (newStory: Omit<Story, 'id' | 'likes' | 'date' | 'comments' | 'authorId'>) => {
     const storyData = {
       ...newStory,
+      authorId: currentAuthorId,
       date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
       likes: 0,
       comments: [],
@@ -169,7 +184,7 @@ export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   };
 
   return (
-    <StoryContext.Provider value={{ stories, addStory, likeStory, addComment, deleteStory }}>
+    <StoryContext.Provider value={{ stories, addStory, likeStory, addComment, deleteStory, currentAuthorId }}>
       {children}
     </StoryContext.Provider>
   );

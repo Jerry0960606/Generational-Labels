@@ -10,7 +10,7 @@ import { useStories } from '../contexts/StoryContext';
 export const FamilyRoom: React.FC = () => {
   const navigate = useNavigate();
   const { t, language } = useLanguage();
-  const { stories, likeStory, addComment, deleteStory } = useStories();
+  const { stories, likeStory, addComment, deleteStory, currentAuthorId } = useStories();
   const [activeStoryComments, setActiveStoryComments] = React.useState<string | null>(null);
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({});
   const [filter, setFilter] = useState<'All' | 'Memory' | 'Advice' | 'Observation'>('All');
@@ -124,17 +124,19 @@ export const FamilyRoom: React.FC = () => {
                   {story.date}
                 </span>
                 <div className="flex items-center gap-3 text-brand-on-surface/30">
-                  <button
-                    onClick={() => {
-                      if (window.confirm(language === 'en' ? 'Are you sure you want to delete this story?' : '確定要刪除這個故事嗎？')) {
-                        deleteStory(story.id);
-                      }
-                    }}
-                    className="hover:text-red-500 transition-colors flex items-center gap-1 mr-2"
-                    title={language === 'en' ? 'Delete story' : '刪除故事'}
-                  >
-                    <Trash2 size={14} />
-                  </button>
+                  {story.authorId === currentAuthorId && (
+                    <button
+                      onClick={() => {
+                        if (window.confirm(language === 'en' ? 'Are you sure you want to delete this story?' : '確定要刪除這個故事嗎？')) {
+                          deleteStory(story.id);
+                        }
+                      }}
+                      className="hover:text-red-500 transition-colors flex items-center gap-1 mr-2"
+                      title={language === 'en' ? 'Delete story' : '刪除故事'}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  )}
                   <button
                     onClick={() => handleLike(story.id)}
                     disabled={likedStories.has(story.id)}
