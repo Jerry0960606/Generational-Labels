@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TypographicOrnament } from '../components/ui/TypographicOrnament';
 import { OffsetButton } from '../components/ui/OffsetButton';
-import { Heart, MessageCircle, Quote, Plus, Filter, Send, Trash2 } from 'lucide-react';
+import { Heart, MessageCircle, Quote, Plus, Filter, Send, Trash2, Sparkles, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useStories } from '../contexts/StoryContext';
@@ -13,6 +13,8 @@ export const FamilyRoom: React.FC = () => {
   const { stories, likeStory, addComment, deleteStory, currentAuthorId } = useStories();
   const [activeStoryComments, setActiveStoryComments] = React.useState<string | null>(null);
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({});
+  const [commentEmojiDrafts, setCommentEmojiDrafts] = useState<Record<string, string>>({});
+  const [showEmojiPicker, setShowEmojiPicker] = useState<string | null>(null);
   const [filter, setFilter] = useState<'All' | 'Memory' | 'Advice' | 'Observation'>('All');
   const [likedStories, setLikedStories] = useState<Set<string>>(() => {
     try {
@@ -33,9 +35,11 @@ export const FamilyRoom: React.FC = () => {
 
   const handlePostComment = (storyId: string) => {
     const text = commentDrafts[storyId] || '';
-    if (!text.trim()) return;
-    addComment(storyId, text);
+    const emoji = commentEmojiDrafts[storyId] || '';
+    if (!text.trim() && !emoji) return;
+    addComment(storyId, text, emoji);
     setCommentDrafts(prev => ({ ...prev, [storyId]: '' }));
+    setCommentEmojiDrafts(prev => ({ ...prev, [storyId]: '' }));
   };
 
   const filterLabels: Record<string, string> = {
@@ -115,12 +119,6 @@ export const FamilyRoom: React.FC = () => {
                 </div>
               )}
 
-              {story.emoji && !story.image && (
-                <div className="mb-4 rounded-xl h-48 bg-brand-surface-container flex items-center justify-center text-8xl hand-drawn-border">
-                  {story.emoji}
-                </div>
-              )}
-
               <p className="text-brand-on-surface/70 font-sans italic leading-relaxed mb-6">
                 "{story.content}"
               </p>
@@ -178,12 +176,13 @@ export const FamilyRoom: React.FC = () => {
                       <div className="space-y-3 mb-4 max-h-48 overflow-y-auto">
                         {story.comments.map(comment => (
                           <div key={comment.id} className="flex gap-2">
-                            <div className="w-6 h-6 rounded-full bg-brand-surface-container border border-brand-outline/20 flex items-center justify-center text-[9px] font-bold text-brand-on-surface/50 flex-shrink-0">
-                              ✦
+                            <div className="w-6 h-6 rounded-full bg-brand-surface-container border border-brand-outline/20 flex items-center justify-center text-[9px] font-bold text-brand-on-surface/50 flex-shrink-0 overflow-hidden">
+                              {comment.emoji || '✦'}
                             </div>
                             <div className="flex-grow">
-                              <div className="bg-brand-surface-container rounded-xl p-2.5 text-[11px] text-brand-on-surface/80 leading-relaxed">
-                                {comment.text}
+                              <div className="bg-brand-surface-container rounded-xl p-2.5 text-[11px] text-brand-on-surface/80 leading-relaxed flex items-center justify-between">
+                                <span>{comment.text}</span>
+                                {comment.emoji && comment.text && <span className="ml-2 text-sm">{comment.emoji}</span>}
                               </div>
                               <span className="text-[9px] text-brand-on-surface/30 font-sans pl-1">{comment.date}</span>
                             </div>
@@ -196,21 +195,59 @@ export const FamilyRoom: React.FC = () => {
                       </p>
                     )}
 
-                    <div className="flex gap-2 pt-1">
-                      <input
-                        type="text"
-                        value={commentDrafts[story.id] || ''}
-                        onChange={e => setCommentDrafts(prev => ({ ...prev, [story.id]: e.target.value }))}
-                        onKeyDown={e => e.key === 'Enter' && handlePostComment(story.id)}
-                        placeholder={t('addComment')}
-                        className="flex-grow bg-brand-surface-container-low border border-brand-outline/10 rounded-lg py-2 px-3 text-[11px] focus:outline-none focus:border-brand-primary/50 transition-colors"
-                      />
-                      <button
-                        onClick={() => handlePostComment(story.id)}
-                        className="px-3 py-2 bg-brand-primary text-brand-background rounded-lg flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest hover:bg-brand-primary/90 transition-colors"
-                      >
-                        <Send size={11} />
-                      </button>
+                    <div className="flex flex-col gap-2 pt-1">
+                      {commentEmojiDrafts[story.id] && (
+                        <div className="flex items-center gap-2 px-2 py-1 bg-brand-surface-container rounded-lg self-start">
+                          <span className="text-xl">{commentEmojiDrafts[story.id]}</span>
+                          <button 
+                            onClick={() => setCommentEmojiDrafts(prev => ({ ...prev, [story.id]: '' }))}
+                            className="text-brand-on-surface/30 hover:text-brand-primary"
+                          >
+                            <X size={10} />
+                          </button>
+                        </div>
+                      )}
+                      <div className="flex gap-2 relative">
+                        <input
+                          type="text"
+                          value={commentDrafts[story.id] || ''}
+                          onChange={e => setCommentDrafts(prev => ({ ...prev, [story.id]: e.target.value }))}
+                          onKeyDown={e => e.key === 'Enter' && handlePostComment(story.id)}
+                          placeholder={t('addComment')}
+                          className="flex-grow bg-brand-surface-container-low border border-brand-outline/10 rounded-lg py-2 px-3 text-[11px] focus:outline-none focus:border-brand-primary/50 transition-colors"
+                        />
+                        <button
+                          onClick={() => setShowEmojiPicker(showEmojiPicker === story.id ? null : story.id)}
+                          className={`p-2 rounded-lg transition-colors ${showEmojiPicker === story.id ? 'bg-brand-primary/10 text-brand-primary' : 'text-brand-on-surface/30 hover:text-brand-primary'}`}
+                        >
+                          <Sparkles size={14} />
+                        </button>
+                        <button
+                          onClick={() => handlePostComment(story.id)}
+                          className="px-3 py-2 bg-brand-primary text-brand-background rounded-lg flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest hover:bg-brand-primary/90 transition-colors"
+                        >
+                          <Send size={11} />
+                        </button>
+
+                        {showEmojiPicker === story.id && (
+                          <div className="absolute bottom-full right-0 mb-2 z-50 bg-brand-background hand-drawn-border p-4 shadow-offset-bold min-w-[200px]">
+                            <div className="grid grid-cols-5 gap-2">
+                              {['❤️', '✨', '💭', '📸', '🌿', '☕', '🏠', '🌳', '🫂', '👶'].map(emoji => (
+                                <button
+                                  key={emoji}
+                                  onClick={() => {
+                                    setCommentEmojiDrafts(prev => ({ ...prev, [story.id]: emoji }));
+                                    setShowEmojiPicker(null);
+                                  }}
+                                  className="w-8 h-8 flex items-center justify-center text-lg hover:bg-brand-surface-container rounded-md transition-colors"
+                                >
+                                  {emoji}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </motion.div>
                 )}

@@ -12,10 +12,8 @@ export const SubmitStory: React.FC = () => {
   const { t, language } = useLanguage();
   const { addStory } = useStories();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [showEmojiModal, setShowEmojiModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     role: '',
@@ -82,26 +80,6 @@ export const SubmitStory: React.FC = () => {
     fileInputRef.current?.click();
   };
 
-  const EMOJI_CATEGORIES = [
-    { 
-      label: language === 'en' ? 'Generations' : '世代象徵', 
-      emojis: ['📻', '📺', '📼', '🎮', '📱', '🤖', '☎️', '💿', '💻', '📷'] 
-    },
-    { 
-      label: language === 'en' ? 'Family & Life' : '家庭與生活', 
-      emojis: ['🏠', '🌳', '📜', '💌', '🕰️', '🫂', '🥘', '🍵', '👶', '👴'] 
-    },
-    { 
-      label: language === 'en' ? 'Feelings' : '情感與回憶', 
-      emojis: ['❤️', '✨', '💭', '📸', '🌿', '☕', '🕯️', '🌸', '💫', '🌻'] 
-    }
-  ];
-
-  const handleEmojiSelect = (emoji: string) => {
-    setSelectedEmoji(emoji);
-    setShowEmojiModal(false);
-  };
-
   const handleSubmit = async (e?: React.FormEvent | React.MouseEvent) => {
     if (e) e.preventDefault();
     setIsSubmitting(true);
@@ -113,7 +91,6 @@ export const SubmitStory: React.FC = () => {
         category: formData.category,
         content: formData.content,
         ...(selectedImage ? { image: selectedImage } : {}),
-        ...(selectedEmoji ? { emoji: selectedEmoji } : {}),
         color: formData.category === 'Memory' ? 'primary' : formData.category === 'Advice' ? 'secondary' : 'lavender'
       });
       setIsSubmitting(false);
@@ -255,14 +232,6 @@ export const SubmitStory: React.FC = () => {
               <Image size={18} />
               <span className="text-xs font-bold font-sans">{t('attachPhoto')}</span>
             </button>
-            <button 
-              type="button"
-              onClick={() => setShowEmojiModal(true)}
-              className="flex items-center gap-2 text-brand-on-surface/40 hover:text-brand-secondary cursor-pointer transition-colors"
-            >
-              <Sparkles size={18} />
-              <span className="text-xs font-bold font-sans">{t('addEmoji')}</span>
-            </button>
           </div>
 
           <div className="flex flex-wrap gap-4">
@@ -292,27 +261,6 @@ export const SubmitStory: React.FC = () => {
               )}
             </AnimatePresence>
 
-            <AnimatePresence>
-              {selectedEmoji && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="relative inline-block"
-                >
-                  <div className="w-32 h-32 hand-drawn-border bg-brand-surface flex items-center justify-center text-6xl">
-                    {selectedEmoji}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedEmoji(null)}
-                    className="absolute -top-2 -right-2 w-6 h-6 bg-brand-primary text-brand-background rounded-full flex items-center justify-center shadow-md hover:bg-brand-primary/90 transition-colors"
-                  >
-                    <X size={12} />
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
         </div>
 
@@ -335,60 +283,6 @@ export const SubmitStory: React.FC = () => {
         </div>
       </form>
 
-      {/* Emoji Selection Modal */}
-      <AnimatePresence>
-        {showEmojiModal && (
-          <div className="fixed inset-0 z-[150] flex items-center justify-center p-6">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowEmojiModal(false)}
-              className="absolute inset-0 bg-brand-on-surface/40 backdrop-blur-sm"
-            />
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-xl bg-brand-background hand-drawn-border shadow-offset-bold p-8 space-y-6"
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-serif font-bold text-brand-primary">
-                  {language === 'en' ? 'Pick an Emoji' : '選擇一個表情符號'}
-                </h3>
-                <button 
-                  onClick={() => setShowEmojiModal(false)}
-                  className="p-2 hover:bg-brand-surface rounded-full transition-colors"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className="space-y-6 overflow-y-auto max-h-[60vh] p-2">
-                {EMOJI_CATEGORIES.map((cat) => (
-                  <div key={cat.label} className="space-y-3">
-                    <h4 className="text-[10px] font-sans font-black uppercase tracking-widest text-brand-on-surface/40">
-                      {cat.label}
-                    </h4>
-                    <div className="flex flex-wrap gap-3">
-                      {cat.emojis.map((emoji) => (
-                        <button
-                          key={emoji}
-                          type="button"
-                          onClick={() => handleEmojiSelect(emoji)}
-                          className="w-12 h-12 flex items-center justify-center text-3xl bg-brand-surface border border-brand-outline/10 rounded-xl hover:shadow-offset-primary transition-all active:scale-95"
-                        >
-                          {emoji}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };

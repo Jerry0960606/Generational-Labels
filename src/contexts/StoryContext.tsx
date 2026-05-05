@@ -6,6 +6,7 @@ export interface Comment {
   id: string;
   text: string;
   date: string;
+  emoji?: string;
 }
 
 export interface Story {
@@ -16,7 +17,6 @@ export interface Story {
   category: 'Memory' | 'Advice' | 'Observation';
   date: string;
   image?: string;
-  emoji?: string;
   color: 'primary' | 'secondary' | 'lavender' | 'outline';
   likes: number;
   comments: Comment[];
@@ -28,7 +28,7 @@ interface StoryContextType {
   stories: Story[];
   addStory: (story: Omit<Story, 'id' | 'likes' | 'date' | 'comments' | 'authorId'>) => Promise<void>;
   likeStory: (id: string) => Promise<void>;
-  addComment: (storyId: string, text: string) => Promise<void>;
+  addComment: (storyId: string, text: string, emoji?: string) => Promise<void>;
   deleteStory: (id: string) => Promise<void>;
   currentAuthorId: string;
 }
@@ -151,12 +151,13 @@ export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-  const addComment = async (storyId: string, text: string) => {
-    if (!text.trim()) return;
+  const addComment = async (storyId: string, text: string, emoji?: string) => {
+    if (!text.trim() && !emoji) return;
     const comment: Comment = {
       id: Math.random().toString(36).substr(2, 9),
       text: text.trim(),
-      date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+      date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+      ...(emoji ? { emoji } : {})
     };
 
     if (db) {
