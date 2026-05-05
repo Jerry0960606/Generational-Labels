@@ -12,6 +12,9 @@ interface Generation {
   keyValues: string[];
   slang: { word: string; meaning: string }[];
   popCulture: { label: string; example: string }[];
+  communication: string;
+  workplace: string;
+  context: string;
   color: 'primary' | 'secondary' | 'lavender' | 'outline';
 }
 
@@ -46,6 +49,9 @@ export const Explorer: React.FC = () => {
         { label: en ? 'Film' : '電影', example: en ? 'Casablanca, Gone with the Wind' : '《北非諜影》、《亂世佳人》' },
         { label: en ? 'Events' : '歷史大事', example: en ? 'WWII, Great Depression, Radio era' : '二次世界大戰、大蕭條、廣播時代' },
       ],
+      communication: en ? 'Formal, handwritten letters, and face-to-face meetings.' : '正式且重禮節，偏好手寫信件與面對面交談。',
+      workplace: en ? 'Loyalty to institutions, hierarchy, and job security.' : '對組織高度忠誠，重視階級制度與工作的穩定性。',
+      context: en ? 'The Great Depression, World War II, and the Golden Age of Radio.' : '經歷過大蕭條與二戰，是在廣播黃金年代成長的群體。',
       color: 'outline'
     },
     {
@@ -71,6 +77,9 @@ export const Explorer: React.FC = () => {
         { label: en ? 'TV' : '電視', example: en ? 'Moon landing live broadcast, I Love Lucy' : '月球登陸直播、情境喜劇' },
         { label: en ? 'Events' : '歷史大事', example: en ? 'Civil Rights Movement, Vietnam War' : '民權運動、越戰' },
       ],
+      communication: en ? 'Telephone calls and personal touch. Values direct talk.' : '偏好電話溝通，重視人際間的溫暖與直接對話。',
+      workplace: en ? 'Competitive, career-defined, and values professional growth.' : '具競爭力，以事業定義自我，重視職涯成長與升遷。',
+      context: en ? 'The Space Race, Civil Rights Movement, and the Rise of TV.' : '見證太空競賽、民權運動興起以及電視的普及。',
       color: 'secondary'
     },
     {
@@ -96,6 +105,9 @@ export const Explorer: React.FC = () => {
         { label: en ? 'Film' : '電影', example: en ? 'Ferris Bueller, The Breakfast Club' : '《蹺課天才》、《早餐俱樂部》' },
         { label: en ? 'Tech' : '科技', example: en ? 'Walkman, Atari, NES, VHS' : '隨身聽、電玩（雅達利/FC紅白機）' },
       ],
+      communication: en ? 'Direct and efficient. Prefers email or brief calls.' : '直接且講求效率，偏好電子郵件或簡短明確的電話。',
+      workplace: en ? 'Invented work-life balance. Skeptical of authority, values autonomy.' : '追求生活與工作平衡，對權威持懷疑態度，重視自主權。',
+      context: en ? 'The Fall of the Berlin Wall, the Cold War, and the PC Revolution.' : '經歷柏林圍牆倒塌與冷戰，是個人電腦革命的見證者。',
       color: 'primary'
     },
     {
@@ -121,6 +133,9 @@ export const Explorer: React.FC = () => {
         { label: en ? 'Tech' : '科技', example: en ? 'AIM, MySpace, iPod, early smartphones' : 'MSN 即時通、MySpace、iPod' },
         { label: en ? 'Events' : '歷史大事', example: en ? '9/11, 2008 Financial Crisis, Social Media rise' : '911事件、2008金融危機、社群媒體興起' },
       ],
+      communication: en ? 'Instant messaging and texts. Values authenticity and "the why".' : '偏好即時通訊與簡訊，重視真實感，想知道事情背後的意義。',
+      workplace: en ? 'Mission-driven, seeks constant feedback and growth flexibility.' : '目標導向，尋求回饋並渴望工作模式的靈活性。',
+      context: en ? 'The 9/11 Era, the 2008 Recession, and the Birth of the iPhone.' : '成長於 911 事件後與金融海嘯期，見證智慧型手機誕生。',
       color: 'lavender'
     },
     {
@@ -146,6 +161,9 @@ export const Explorer: React.FC = () => {
         { label: en ? 'Tech' : '科技', example: en ? 'TikTok, Snapchat, YouTube, Streaming' : 'TikTok、Snapchat、YouTube 直播' },
         { label: en ? 'Events' : '歷史大事', example: en ? 'COVID-19, Climate activism, BLM movement' : '新冠疫情、氣候行動、BLM 運動' },
       ],
+      communication: en ? 'Video-first, memes, and emoji-heavy. Values digital privacy.' : '視訊優先，擅長使用梗圖與表情符號，極度重視數位隱私。',
+      workplace: en ? 'Values mental health, diversity, and social impact above all.' : '重視心理健康與多元化，追求對社會有正面影響力的工作。',
+      context: en ? 'The Global Pandemic, Social Media Saturation, and Climate Crisis.' : '成長於疫情時期與社群媒體飽和年代，關注氣候變遷危機。',
       color: 'primary'
     },
     {
@@ -171,6 +189,9 @@ export const Explorer: React.FC = () => {
         { label: en ? 'Media' : '媒體', example: en ? 'YouTube Kids, Roblox, Minecraft' : 'YouTube Kids、Roblox、Minecraft' },
         { label: en ? 'Events' : '歷史大事', example: en ? 'Post-COVID world, AI revolution, remote school' : '後疫情世界、AI 革命、遠距教學' },
       ],
+      communication: en ? 'Visual, interactive, and AI-assisted. Comfortable with voice commands.' : '高度視覺化且具互動性，習慣與 AI 協作並使用語音指令。',
+      workplace: en ? 'Likely entrepreneurial, tech-integrated, and highly adaptable.' : '預期將展現高度創業精神與科技融合力，適應力極強。',
+      context: en ? 'The AI Revolution, Metaverses, and the Post-Pandemic World.' : '身處 AI 革命與元宇宙萌芽期，成長於後疫情的新常態。',
       color: 'secondary'
     }
   ];
@@ -277,7 +298,7 @@ export const Explorer: React.FC = () => {
             />
             <motion.div
               layoutId={selectedGen.id}
-              className="relative w-full max-w-2xl bg-brand-background hand-drawn-border shadow-offset-bold overflow-hidden"
+              className="relative w-full max-w-3xl bg-brand-background hand-drawn-border shadow-offset-bold overflow-hidden"
             >
               <div className="p-6 sm:p-10 overflow-y-auto max-h-[85vh]">
                 <button
@@ -329,6 +350,31 @@ export const Explorer: React.FC = () => {
                         </div>
                       ))}
                     </div>
+                  </div>
+                </div>
+
+                {/* Detailed Traits */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 pt-8 border-t border-brand-outline/10">
+                  <div className="space-y-3">
+                    <h4 className="text-[10px] font-sans font-black uppercase tracking-widest text-brand-primary flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-brand-primary" />
+                      {t('explorerCommunication')}
+                    </h4>
+                    <p className="text-sm text-brand-on-surface/70 leading-relaxed font-medium">{selectedGen.communication}</p>
+                  </div>
+                  <div className="space-y-3">
+                    <h4 className="text-[10px] font-sans font-black uppercase tracking-widest text-brand-secondary flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-brand-secondary" />
+                      {t('explorerWorkplace')}
+                    </h4>
+                    <p className="text-sm text-brand-on-surface/70 leading-relaxed font-medium">{selectedGen.workplace}</p>
+                  </div>
+                  <div className="space-y-3">
+                    <h4 className="text-[10px] font-sans font-black uppercase tracking-widest text-brand-tertiary flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-brand-tertiary" />
+                      {t('explorerContext')}
+                    </h4>
+                    <p className="text-sm text-brand-on-surface/70 leading-relaxed font-medium">{selectedGen.context}</p>
                   </div>
                 </div>
 

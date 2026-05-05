@@ -197,6 +197,9 @@ export const translations: Translations = {
   explorerPopCulture: { en: 'Pop Culture Touchstones', zh: '代表性流行文化' },
   explorerKeyPhilosophy: { en: 'Key Philosophy', zh: '核心價值觀' },
   explorerSlangBox: { en: 'The Slang Box', zh: '流行語速查' },
+  explorerCommunication: { en: 'Communication Style', zh: '溝通風格' },
+  explorerWorkplace: { en: 'Workplace Values', zh: '職場價值觀' },
+  explorerContext: { en: 'Historical Context', zh: '歷史背景' },
 };
 
 interface LanguageContextType {

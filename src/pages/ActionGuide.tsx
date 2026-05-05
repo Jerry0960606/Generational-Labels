@@ -23,27 +23,60 @@ const GENERATION_OPTIONS_ZH = [
   'Alpha 世代 (2013–2025)',
 ];
 
+const SPARK_TEMPLATES = {
+  en: [
+    "Ask: 'What was a typical Saturday morning like for you when you were 10?'",
+    "Try starting with: 'What's a piece of advice you've carried with you for a long time?'",
+    "Say: 'I was thinking about how much technology has changed. What's one thing you miss from before everything was digital?'",
+    "Ask: 'What was your favorite song when you were my age?'",
+    "Try: 'If you could go back to any age for one day, which one would it be and why?'",
+    "Ask: 'What's the biggest lesson you've learned from a different generation?'",
+    "Say: 'I'd love to hear about the first concert you ever went to. Who did you see?'",
+    "Ask: 'What's a tradition from your childhood that you wish we still did today?'"
+  ],
+  zh: [
+    "試著問問：『你 10 歲的時候，一個典型的週六早晨通常是怎麼度過的？』",
+    "開場白建議：『有一句你記了很久、對你很有幫助的建議或座右銘嗎？』",
+    "你可以說：『我最近在想科技變化真的很快。有什麼東西是你懷念那種「非數位化」時代的嗎？』",
+    "問問看：『當你跟我現在一樣大的時候，你最喜歡的一首歌是什麼？』",
+    "試試看：『如果你可以回到過去的任何一個年齡待上一天，你會選幾歲？為什麼？』",
+    "問道：『你從不同世代的人身上學到過最重要的一課是什麼？』",
+    "說說看：『我很想聽聽你人生中看的第一場演唱會（或電影），當時是什麼樣的情景？』",
+    "探詢：『有什麼你小時候的傳統或習俗，是你希望我們現在還能保留下來的嗎？』"
+  ]
+};
+
 async function generateSpark(
   yourGen: string,
   theirGen: string,
   language: 'en' | 'zh'
 ): Promise<string> {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
+  
   if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
-    // Graceful fallback when no API key is configured
+    // Graceful fallback with randomization
+    await new Promise(r => setTimeout(r, 800));
+    const pool = SPARK_TEMPLATES[language];
+    const randomIndex = Math.floor(Math.random() * pool.length);
     const yName = yourGen.split('(')[0].trim();
     const tName = theirGen.split('(')[0].trim();
-    const fallbacks: Record<string, string> = {
-      en: `"${yName} to ${tName}: 'What's one thing you wish more people understood about the era you grew up in?' — then really listen."`,
-      zh: `「${yName} 對 ${tName} 說：『你希望更多人了解你成長年代的哪件事？』——然後認真傾聽。」`,
-    };
-    await new Promise(r => setTimeout(r, 800));
-    return fallbacks[language];
+    
+    // Add specific context to the generic template
+    const base = pool[randomIndex];
+    if (language === 'en') {
+      return `"${yName} to ${tName}: ${base.replace('Ask: ', '').replace('Try starting with: ', '').replace('Say: ', '').replace('Try: ', '')}"`;
+    } else {
+      return `「${yName} 對 ${tName} 說：${base.replace('試著問問：', '').replace('開場白建議：', '').replace('你可以說：', '').replace('試試看：', '').replace('問道：', '').replace('說說看：', '').replace('探詢：', '')}」`;
+    }
   }
+
   const ai = new GoogleGenAI({ apiKey });
+  // Add a timestamp or random seed to the prompt to ensure variety
+  const randomSeed = Math.random().toString(36).substring(7);
   const prompt = language === 'en'
-    ? `You are a warm, witty generational bridge-builder. Generate ONE short, specific, heartfelt conversation starter (2–3 sentences max) for a ${yourGen} speaking with a ${theirGen}. Focus on a shared human experience that transcends their age gap. Wrap the opening line in quotation marks. No preamble, just the prompt.`
-    : `你是一位溫暖風趣的世代橋樑建造者。請為一位${yourGen.split('(')[0].trim()}與${theirGen.split('(')[0].trim()}之間的對話，生成一句簡短、具體、溫暖的破冰引言（最多2至3句話）。聚焦於跨越年齡差距的共同人類經驗。用引號包住開場白。不要加前言，直接給出引言。`;
+    ? `You are a warm, witty generational bridge-builder. Generate ONE short, specific, heartfelt conversation starter (2–3 sentences max) for a ${yourGen} speaking with a ${theirGen}. Focus on a shared human experience that transcends their age gap. Seed: ${randomSeed}. Wrap the opening line in quotation marks. No preamble, just the prompt.`
+    : `你是一位溫慢風趣的世代橋樑建造者。隨機種子：${randomSeed}。請為一位${yourGen.split('(')[0].trim()}與${theirGen.split('(')[0].trim()}之間的對話，生成一句簡短、具體、溫暖的破冰引言（最多2至3句話）。聚焦於跨越年齡差距的共同人類經驗。用引號包住開場白。不要加前言，直接給出引言。`;
+  
   const response = await ai.models.generateContent({
     model: 'gemini-2.0-flash',
     contents: prompt,
