@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { TypographicOrnament } from './TypographicOrnament';
 import { OffsetButton } from './OffsetButton';
-import { Sparkles, BookOpen, Heart, MessageCircle } from 'lucide-react';
+import { Sparkles, BookOpen, Heart, MessageCircle, ArrowLeftRight } from 'lucide-react';
 
 export const Onboarding: React.FC = () => {
   const { t, language, setLanguage } = useLanguage();
@@ -60,15 +60,16 @@ export const Onboarding: React.FC = () => {
               </p>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-5">
               {[
                 { text: t('onboardingStep1'), icon: BookOpen, color: 'text-brand-primary' },
-                { text: t('onboardingStep2'), icon: Heart, color: 'text-brand-secondary' },
-                { text: t('onboardingStep3'), icon: MessageCircle, color: 'text-brand-tertiary' }
+                { text: t('onboardingStep2'), icon: ArrowLeftRight, color: 'text-brand-secondary' },
+                { text: t('onboardingStep3'), icon: Sparkles, color: 'text-brand-tertiary' },
+                { text: t('onboardingStep4'), icon: MessageCircle, color: 'text-brand-primary' }
               ].map((step, idx) => (
-                <div key={idx} className="flex items-start gap-4">
-                  <div className={`mt-1 p-2 rounded-lg bg-brand-surface border border-brand-outline/10 ${step.color}`}>
-                    <step.icon size={20} />
+                <div key={idx} className="flex items-start gap-4 group">
+                  <div className={`mt-1 p-2 rounded-lg bg-brand-surface border border-brand-outline/10 group-hover:scale-110 transition-transform ${step.color}`}>
+                    <step.icon size={18} />
                   </div>
                   <p className="text-sm font-sans font-medium text-brand-on-surface/80 leading-relaxed pt-1">
                     {step.text}

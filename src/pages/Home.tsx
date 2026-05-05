@@ -59,7 +59,7 @@ export const Home: React.FC = () => {
 
       <WavyDivider className="my-24" />
 
-      <section className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {[
           {
             title: t('fieldGuideTitle'),
@@ -67,6 +67,20 @@ export const Home: React.FC = () => {
             icon: "◓",
             path: "/explorer",
             color: "lavender"
+          },
+          {
+            title: t('homeCardComparisonTitle'),
+            desc: t('homeCardComparisonDesc'),
+            icon: "⟢",
+            path: "/comparison",
+            color: "secondary"
+          },
+          {
+            title: t('homeCardDictionaryTitle'),
+            desc: t('homeCardDictionaryDesc'),
+            icon: "📚",
+            path: "/dictionary",
+            color: "primary"
           },
           {
             title: t('convBridgeTitle'),

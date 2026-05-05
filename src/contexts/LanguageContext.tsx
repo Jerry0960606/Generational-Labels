@@ -46,14 +46,19 @@ export const translations: Translations = {
   convBridgeDesc: { en: "Practical tips to help you start conversations that don't end in awkward silence.", zh: '提供實用的聊天主題，讓你與家人聚餐時不再尷尬沒話聊。' },
   quizTitle: { en: 'Culture Check', zh: '你是哪個世代的人？' },
   quizDesc: { en: 'Take a quick test to see how well you navigate different generational cultures.', zh: '測測看你的思維更偏向哪個世代，以及你與其他世代溝通的契合度。' },
+  homeCardComparisonTitle: { en: 'Comparison Mode', zh: '世代對照' },
+  homeCardComparisonDesc: { en: 'Compare two generations side-by-side to understand cultural shifts.', zh: '並排對比不同世代，深入了解文化變遷與溝通風格的演進。' },
+  homeCardDictionaryTitle: { en: 'Slang Dictionary', zh: '流行語辭典' },
+  homeCardDictionaryDesc: { en: 'From Groovy to Rizz, master the language of every era.', zh: '從阿公年代到最新流行語，一次掌握跨越時空的語言密碼。' },
 
   // Onboarding
   onboardingWelcome: { en: 'Welcome!', zh: '歡迎！' },
   onboardingIntro: { en: "This site helps you connect with family across different ages. Here's how it works:", zh: '這個網站是為了幫助你和不同年齡的家人聊天而設計的。簡單介紹一下功能：' },
-  onboardingStep1: { en: 'Generation Guide: Learn about the values and slang of different eras.', zh: '1. 世代圖鑑：了解阿公阿嬤或孫子孫女那個年代的價值觀和流行語。' },
-  onboardingStep2: { en: 'Stories: Read real family memories and share your own pieces.', zh: '2. 故事牆：在這裡看大家分享的人生故事，你也可以寫下自己的。' },
-  onboardingStep3: { en: 'Tips & Quiz: Get ideas on how to start a talk and test your skills.', zh: '3. 溝通與測驗：找不到話題嗎？這裡有實用的聊天技巧和趣味測驗。' },
-  onboardingGotIt: { en: "Got it, let's go!", zh: '了解，開始體驗吧！' },
+  onboardingStep1: { en: 'Guide & Dictionary: Learn the unique culture and slang of each era.', zh: '1. 圖鑑與辭典：深入了解各世代的文化價值觀，甚至是最新流行語。' },
+  onboardingStep2: { en: 'Comparison Mode: See the differences between two generations side-by-side.', zh: '2. 世代對照：並排對比不同世代，快速掌握溝通風格的差異。' },
+  onboardingStep3: { en: 'Stories & Reactions: Share memories and respond with heartfelt emojis.', zh: '3. 故事與互動：分享您的家族回憶，並用表情符號與大家交流。' },
+  onboardingStep4: { en: 'Tips & Quiz: Master cross-generational dialogue and test your empathy.', zh: '4. 技巧與測驗：學習實用的聊天方案，並測測看您的共情指數。' },
+  onboardingGotIt: { en: "Let's Start!", zh: '立即開始體驗！' },
 
   // Quiz Questions (7 questions)
   q1Text: { en: "You hear a younger person use a term you've never heard (e.g., 'Skibidi'). What's your instinct?", zh: '當你聽到年輕人說一些你聽不懂的流行語（例如：Skibidi）時，你的反應是？' },
