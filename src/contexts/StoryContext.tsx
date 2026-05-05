@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { db, storage } from '../firebase';
+import { db } from '../firebase';
 import { collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export interface Comment {
   id: string;
@@ -23,12 +22,11 @@ export interface Story {
   comments: Comment[];
   createdAt?: number;
   authorId?: string;
-  audioUrl?: string;
 }
 
 interface StoryContextType {
   stories: Story[];
-  addStory: (story: Omit<Story, 'id' | 'likes' | 'date' | 'comments' | 'authorId'>, audioBlob?: Blob) => Promise<void>;
+  addStory: (story: Omit<Story, 'id' | 'likes' | 'date' | 'comments' | 'authorId'>) => Promise<void>;
   likeStory: (id: string) => Promise<void>;
   addComment: (storyId: string, text: string) => Promise<void>;
   deleteStory: (id: string) => Promise<void>;
@@ -120,27 +118,9 @@ export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return () => unsubscribe();
   }, []);
 
-  const addStory = async (newStory: Omit<Story, 'id' | 'likes' | 'date' | 'comments' | 'authorId'>, audioBlob?: Blob) => {
-    let audioUrl = '';
-    
-    if (audioBlob && storage) {
-      try {
-        console.log("Starting audio upload...");
-        const audioName = `voice_${Date.now()}_${currentAuthorId}.webm`;
-        const audioRef = ref(storage, `stories/audio/${audioName}`);
-        await uploadBytes(audioRef, audioBlob);
-        console.log("Audio upload successful, getting URL...");
-        audioUrl = await getDownloadURL(audioRef);
-        console.log("Audio URL acquired:", audioUrl);
-      } catch (err) {
-        console.error("Audio upload failed:", err);
-        throw new Error("語音上傳失敗，請檢查 Firebase Storage 權限設置。");
-      }
-    }
-
+  const addStory = async (newStory: Omit<Story, 'id' | 'likes' | 'date' | 'comments' | 'authorId'>) => {
     const storyData = {
       ...newStory,
-      audioUrl,
       authorId: currentAuthorId,
       date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
       likes: 0,

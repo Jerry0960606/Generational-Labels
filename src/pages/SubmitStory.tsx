@@ -6,7 +6,6 @@ import { Send, Image, PenTool, Sparkles, RefreshCcw, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useStories } from '../contexts/StoryContext';
-import { AudioRecorder } from '../components/ui/AudioRecorder';
 
 export const SubmitStory: React.FC = () => {
   const navigate = useNavigate();
@@ -23,7 +22,6 @@ export const SubmitStory: React.FC = () => {
     category: 'Memory' as 'Memory' | 'Advice' | 'Observation',
     content: ''
   });
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,7 +115,7 @@ export const SubmitStory: React.FC = () => {
         ...(selectedImage ? { image: selectedImage } : {}),
         ...(selectedEmoji ? { emoji: selectedEmoji } : {}),
         color: formData.category === 'Memory' ? 'primary' : formData.category === 'Advice' ? 'secondary' : 'lavender'
-      }, audioBlob || undefined);
+      });
       setIsSubmitting(false);
       setSubmitted(true);
       setTimeout(() => navigate('/family-room'), 3000);
@@ -237,17 +235,6 @@ export const SubmitStory: React.FC = () => {
             onChange={(e) => setFormData({...formData, content: e.target.value})}
             placeholder={t('storyPlaceholder')}
             className="w-full h-48 bg-brand-surface-container-low border border-brand-outline/10 rounded-xl p-6 font-sans text-sm resize-none focus:outline-none focus:border-brand-primary transition-colors"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-xs font-sans font-black uppercase tracking-widest text-brand-secondary block">
-            {language === 'en' ? 'Voice Memory (Optional)' : '語音記憶 (選填)'}
-          </label>
-          <AudioRecorder 
-            onRecordingComplete={(blob) => setAudioBlob(blob)}
-            onClear={() => setAudioBlob(null)}
-            language={language}
           />
         </div>
 

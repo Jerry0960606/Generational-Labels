@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TypographicOrnament } from '../components/ui/TypographicOrnament';
 import { OffsetButton } from '../components/ui/OffsetButton';
-import { Heart, MessageCircle, Quote, Plus, Filter, Send, Trash2, Play, Pause, Volume2 } from 'lucide-react';
+import { Heart, MessageCircle, Quote, Plus, Filter, Send, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useStories } from '../contexts/StoryContext';
@@ -125,20 +125,6 @@ export const FamilyRoom: React.FC = () => {
                 "{story.content}"
               </p>
 
-              {story.audioUrl && (
-                <div className="mb-6 p-4 bg-brand-surface-container-low rounded-2xl border border-brand-outline/5 flex items-center gap-4 group/audio">
-                  <AudioPlayer url={story.audioUrl} color={story.color} />
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Volume2 size={12} className="text-brand-primary" />
-                      <span className="text-[10px] font-sans font-black uppercase tracking-widest text-brand-on-surface/30">
-                        {language === 'en' ? 'Voice Memory' : '語音記憶'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
               <div className="flex items-center justify-between pt-6 border-t border-brand-outline/10">
                 <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-brand-on-surface/30">
                   {story.date}
@@ -254,43 +240,6 @@ export const FamilyRoom: React.FC = () => {
           {t('shareStory')}
         </OffsetButton>
       </div>
-    </div>
-  );
-};
-
-const AudioPlayer: React.FC<{ url: string; color: string }> = ({ url, color }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  return (
-    <div className="relative">
-      <button
-        onClick={togglePlay}
-        className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-          color === 'primary' ? 'bg-brand-primary text-brand-surface' : 
-          color === 'secondary' ? 'bg-brand-secondary text-brand-surface' : 
-          'bg-brand-tertiary text-brand-surface'
-        } hover:scale-110 active:scale-95 shadow-sm`}
-      >
-        {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" className="ml-1" />}
-      </button>
-      <audio 
-        ref={audioRef} 
-        src={url} 
-        onEnded={() => setIsPlaying(false)}
-        className="hidden" 
-      />
     </div>
   );
 };
