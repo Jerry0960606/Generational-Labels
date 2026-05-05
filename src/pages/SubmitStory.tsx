@@ -12,6 +12,7 @@ export const SubmitStory: React.FC = () => {
   const { t, language } = useLanguage();
   const { addStory } = useStories();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [showEmojiModal, setShowEmojiModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
