@@ -1,3 +1,4 @@
+// Updated onboarding with 4 steps
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../../contexts/LanguageContext';
