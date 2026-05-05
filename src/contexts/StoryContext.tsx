@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { db } from '../firebase';
+import { collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
 
 export interface Comment {
   id: string;
@@ -17,13 +19,15 @@ export interface Story {
   color: 'primary' | 'secondary' | 'lavender' | 'outline';
   likes: number;
   comments: Comment[];
+  createdAt?: number;
 }
 
 interface StoryContextType {
   stories: Story[];
-  addStory: (story: Omit<Story, 'id' | 'likes' | 'date' | 'comments'>) => void;
-  likeStory: (id: string) => void;
-  addComment: (storyId: string, text: string) => void;
+  addStory: (story: Omit<Story, 'id' | 'likes' | 'date' | 'comments'>) => Promise<void>;
+  likeStory: (id: string) => Promise<void>;
+  addComment: (storyId: string, text: string) => Promise<void>;
+  deleteStory: (id: string) => Promise<void>;
 }
 
 const INITIAL_STORIES: Story[] = [
@@ -80,38 +84,96 @@ export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   });
 
   useEffect(() => {
-    localStorage.setItem('generational_stories', JSON.stringify(stories));
+    if (!db) return;
+    
+    const q = query(collection(db, 'stories'), orderBy('createdAt', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const fetchedStories = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Story[];
+      
+      setStories(fetchedStories);
+    }, (error) => {
+      console.error("Error fetching stories:", error);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!db) {
+      localStorage.setItem('generational_stories', JSON.stringify(stories));
+    }
   }, [stories]);
 
-  const addStory = (newStory: Omit<Story, 'id' | 'likes' | 'date' | 'comments'>) => {
-    const story: Story = {
+  const addStory = async (newStory: Omit<Story, 'id' | 'likes' | 'date' | 'comments'>) => {
+    const storyData = {
       ...newStory,
-      id: Math.random().toString(36).substr(2, 9),
       date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
       likes: 0,
-      comments: []
+      comments: [],
+      createdAt: Date.now()
     };
-    setStories(prev => [story, ...prev]);
+
+    if (db) {
+      await addDoc(collection(db, 'stories'), storyData);
+    } else {
+      const story: Story = {
+        ...storyData,
+        id: Math.random().toString(36).substr(2, 9),
+      };
+      setStories(prev => [story, ...prev]);
+    }
   };
 
-  const likeStory = (id: string) => {
-    setStories(prev => prev.map(s => s.id === id ? { ...s, likes: s.likes + 1 } : s));
+  const likeStory = async (id: string) => {
+    if (db) {
+      const storyRef = doc(db, 'stories', id);
+      const storyToUpdate = stories.find(s => s.id === id);
+      if (storyToUpdate) {
+        await updateDoc(storyRef, { likes: storyToUpdate.likes + 1 });
+      }
+    } else {
+      setStories(prev => prev.map(s => s.id === id ? { ...s, likes: s.likes + 1 } : s));
+    }
   };
 
-  const addComment = (storyId: string, text: string) => {
+  const addComment = async (storyId: string, text: string) => {
     if (!text.trim()) return;
     const comment: Comment = {
       id: Math.random().toString(36).substr(2, 9),
       text: text.trim(),
       date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     };
-    setStories(prev =>
-      prev.map(s => s.id === storyId ? { ...s, comments: [...s.comments, comment] } : s)
-    );
+
+    if (db) {
+      const storyRef = doc(db, 'stories', storyId);
+      const storyToUpdate = stories.find(s => s.id === storyId);
+      if (storyToUpdate) {
+        await updateDoc(storyRef, { comments: [...storyToUpdate.comments, comment] });
+      }
+    } else {
+      setStories(prev =>
+        prev.map(s => s.id === storyId ? { ...s, comments: [...s.comments, comment] } : s)
+      );
+    }
+  };
+
+  const deleteStory = async (id: string) => {
+    if (db) {
+      try {
+        await deleteDoc(doc(db, 'stories', id));
+      } catch (e) {
+        console.error("Error deleting story:", e);
+      }
+    } else {
+      setStories(prev => prev.filter(s => s.id !== id));
+    }
   };
 
   return (
-    <StoryContext.Provider value={{ stories, addStory, likeStory, addComment }}>
+    <StoryContext.Provider value={{ stories, addStory, likeStory, addComment, deleteStory }}>
       {children}
     </StoryContext.Provider>
   );
