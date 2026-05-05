@@ -32,8 +32,8 @@ interface StoryContextType {
 
 const INITIAL_STORIES: Story[] = [
   {
-    id: '1',
-    author: 'Elena',
+    id: 'example-1',
+    author: 'Elena (Example)',
     role: 'Grandparent',
     content: 'My grandmother used to say that a family is like a quilt—different pieces stitched together by the thread of love. I finally understand what she meant today.',
     category: 'Memory',
@@ -45,8 +45,8 @@ const INITIAL_STORIES: Story[] = [
     ]
   },
   {
-    id: '2',
-    author: 'Marcus',
+    id: 'example-2',
+    author: 'Marcus (Example)',
     role: 'Child',
     content: "I taught my grandpa how to use emojis today. He keeps sending me the \"sparkles\" emoji for everything. It's making my day.",
     category: 'Observation',
@@ -59,8 +59,8 @@ const INITIAL_STORIES: Story[] = [
     ]
   },
   {
-    id: '3',
-    author: 'Sarah J.',
+    id: 'example-3',
+    author: 'Sarah J. (Example)',
     role: 'Parent',
     content: "Advice for my daughter: Don't worry about having it all figured out at 20. Your grandmother was still finding herself at 50, and she was the happiest person I knew.",
     category: 'Advice',
@@ -79,7 +79,6 @@ const migrateStories = (raw: Story[]): Story[] =>
 
 export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [stories, setStories] = useState<Story[]>(INITIAL_STORIES);
-  const [loadedFromFirebase, setLoadedFromFirebase] = useState(false);
 
   useEffect(() => {
     if (!db) {
@@ -96,14 +95,7 @@ export const StoryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         ...doc.data()
       })) as Story[];
 
-      // If Firestore is empty on first load, show INITIAL_STORIES
-      if (fetchedStories.length === 0 && !loadedFromFirebase) {
-        setLoadedFromFirebase(true);
-        return;
-      }
-
-      setStories(fetchedStories);
-      setLoadedFromFirebase(true);
+      setStories([...fetchedStories, ...INITIAL_STORIES]);
     }, (error) => {
       console.error("Error fetching stories:", error);
     });
