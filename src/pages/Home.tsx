@@ -78,7 +78,7 @@ export const Home: React.FC = () => {
           {
             title: t('homeCardDictionaryTitle'),
             desc: t('homeCardDictionaryDesc'),
-            icon: "📚",
+            icon: "⬖",
             path: "/dictionary",
             color: "primary"
           },
