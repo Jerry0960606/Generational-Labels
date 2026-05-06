@@ -23,7 +23,7 @@ export const Onboarding: React.FC = () => {
   return (
     <AnimatePresence>
       {isVisible && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -35,9 +35,9 @@ export const Onboarding: React.FC = () => {
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="relative w-full max-w-xl bg-brand-background hand-drawn-border shadow-offset-bold p-8 sm:p-12 space-y-8"
+            className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-brand-background hand-drawn-border shadow-offset-bold p-5 sm:p-12 space-y-5 sm:space-y-8"
           >
-            <div className="text-center space-y-4">
+            <div className="text-center space-y-3 sm:space-y-4">
               <div className="flex justify-center gap-4 mb-4">
                 <button
                   onClick={() => setLanguage('en')}
@@ -52,8 +52,8 @@ export const Onboarding: React.FC = () => {
                   繁體中文
                 </button>
               </div>
-              <TypographicOrnament variant="flower" className="text-4xl" />
-              <h2 className="text-3xl font-serif font-bold text-brand-primary flex items-center justify-center gap-2">
+              <TypographicOrnament variant="flower" className="text-3xl sm:text-4xl" />
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-brand-primary flex items-center justify-center gap-2">
                 <Sparkles size={28} className="text-brand-secondary" /> {language === 'en' ? 'Welcome to GL!' : '歡迎來到 GL！'}
               </h2>
               <p className="text-brand-on-surface/70 font-sans font-medium leading-relaxed">
@@ -61,7 +61,7 @@ export const Onboarding: React.FC = () => {
               </p>
             </div>
 
-            <div className="space-y-5">
+            <div className="space-y-3 sm:space-y-5">
               {[
                 { text: t('onboardingStep1'), icon: BookOpen, color: 'text-brand-primary' },
                 { text: t('onboardingStep2'), icon: ArrowLeftRight, color: 'text-brand-secondary' },
@@ -79,8 +79,8 @@ export const Onboarding: React.FC = () => {
               ))}
             </div>
 
-            <div className="pt-4 flex justify-center">
-              <OffsetButton onClick={handleClose} variant="primary" className="px-10 py-4 text-lg">
+            <div className="pt-2 sm:pt-4 flex justify-center sticky bottom-0 bg-brand-background pb-1">
+              <OffsetButton onClick={handleClose} variant="primary" className="px-8 sm:px-10 py-3 sm:py-4 text-base sm:text-lg">
                 {t('onboardingGotIt')}
               </OffsetButton>
             </div>

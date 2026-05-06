@@ -75,7 +75,7 @@ export const Comparison: React.FC = () => {
   );
 
   return (
-    <div className="py-12 px-6 max-w-7xl mx-auto">
+    <div className="py-12 px-6 pb-24 lg:pb-12 max-w-7xl mx-auto">
       <header className="mb-16 text-center space-y-4">
         <TypographicOrnament variant="diamond" className="text-3xl" />
         <h1 className="text-4xl md:text-6xl font-serif font-bold text-brand-primary">{t('comparisonTitle')}</h1>

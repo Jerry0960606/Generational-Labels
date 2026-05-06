@@ -128,7 +128,7 @@ export const SubmitStory: React.FC = () => {
   }
 
   return (
-    <div className="py-12 px-6 max-w-3xl mx-auto">
+    <div className="py-12 px-6 pb-24 lg:pb-12 max-w-3xl mx-auto">
       <header className="mb-12 text-center space-y-4">
         <TypographicOrnament variant="scroll" className="text-3xl" />
         <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-primary">{t('submitTitle')}</h1>

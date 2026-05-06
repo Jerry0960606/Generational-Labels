@@ -11,7 +11,7 @@ export const Home: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="py-12 px-6 overflow-x-hidden">
+    <div className="py-12 px-6 pb-24 lg:pb-12 overflow-x-hidden">
       <section className="max-w-5xl mx-auto text-center space-y-8 relative">
         <div className="space-y-4">
           <motion.div

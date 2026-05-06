@@ -50,7 +50,7 @@ export const FamilyRoom: React.FC = () => {
   };
 
   return (
-    <div className="py-12 px-6 max-w-7xl mx-auto">
+    <div className="py-12 px-6 pb-24 lg:pb-12 max-w-7xl mx-auto">
       <header className="mb-12 text-center space-y-4">
         <TypographicOrnament variant="flower" className="text-3xl" />
         <h1 className="text-4xl md:text-6xl font-serif font-bold text-brand-secondary">{t('familyRoomTitle')}</h1>
@@ -214,17 +214,17 @@ export const FamilyRoom: React.FC = () => {
                           onChange={e => setCommentDrafts(prev => ({ ...prev, [story.id]: e.target.value }))}
                           onKeyDown={e => e.key === 'Enter' && handlePostComment(story.id)}
                           placeholder={t('addComment')}
-                          className="flex-grow bg-brand-surface-container-low border border-brand-outline/10 rounded-lg py-2 px-3 text-[11px] focus:outline-none focus:border-brand-primary/50 transition-colors"
+                          className="flex-grow min-w-0 bg-brand-surface-container-low border border-brand-outline/10 rounded-lg py-2 px-3 text-[11px] focus:outline-none focus:border-brand-primary/50 transition-colors"
                         />
                         <button
                           onClick={() => setShowEmojiPicker(showEmojiPicker === story.id ? null : story.id)}
-                          className={`p-2 rounded-lg transition-colors ${showEmojiPicker === story.id ? 'bg-brand-primary/10 text-brand-primary' : 'text-brand-on-surface/30 hover:text-brand-primary'}`}
+                          className={`p-2 rounded-lg transition-colors flex-shrink-0 min-w-[36px] min-h-[36px] flex items-center justify-center ${showEmojiPicker === story.id ? 'bg-brand-primary/10 text-brand-primary' : 'text-brand-on-surface/30 hover:text-brand-primary'}`}
                         >
                           <Sparkles size={14} />
                         </button>
                         <button
                           onClick={() => handlePostComment(story.id)}
-                          className="px-3 py-2 bg-brand-primary text-brand-background rounded-lg flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest hover:bg-brand-primary/90 transition-colors"
+                          className="px-3 py-2 bg-brand-primary text-brand-background rounded-lg flex items-center justify-center gap-1 text-[10px] font-bold uppercase tracking-widest hover:bg-brand-primary/90 transition-colors flex-shrink-0 min-w-[44px] min-h-[36px]"
                         >
                           <Send size={11} />
                         </button>
