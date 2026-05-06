@@ -180,9 +180,9 @@ export const translations: Translations = {
   missionLabel: { en: 'Our Mission', zh: '我們的使命' },
   missionQuote: { en: '"Every story shared is a brick in the bridge between us."', zh: '「每一個分享的故事，都是連結我們的橋墩上的一塊磚。」' },
 
-  // AI Conversation Starter (ActionGuide)
-  aiStarterTitle: { en: 'AI Conversation Spark', zh: 'AI 對話啟動器' },
-  aiStarterDesc: { en: 'Pick two generations, and our AI will craft a personalised opening line for your next family conversation.', zh: '選擇兩個世代，AI 將為你量身打造一句開啟家族對話的引言。' },
+  // Conversation Starter (ActionGuide)
+  aiStarterTitle: { en: 'Conversation Spark', zh: '對話啟動器' },
+  aiStarterDesc: { en: 'Pick two generations, and we will craft a personalised opening line for your next family conversation.', zh: '選擇兩個世代，為你量身打造一句開啟家族對話的引言。' },
   aiStarterYourGen: { en: 'Your Generation', zh: '你的世代' },
   aiStarterTheirGen: { en: 'Their Generation', zh: '對方的世代' },
   aiStarterGenerate: { en: 'Generate Spark', zh: '產生對話引言' },

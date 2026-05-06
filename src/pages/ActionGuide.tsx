@@ -88,7 +88,7 @@ export const ActionGuide: React.FC = () => {
   const { t, language } = useLanguage();
   const en = language === 'en';
 
-  // AI Spark state
+  // Spark state
   const [yourGen, setYourGen] = useState('');
   const [theirGen, setTheirGen] = useState('');
   const [sparkResult, setSparkResult] = useState('');
@@ -182,7 +182,7 @@ export const ActionGuide: React.FC = () => {
         </p>
       </header>
 
-      {/* AI Conversation Spark — full width, above the columns */}
+      {/* Conversation Spark — full width, above the columns */}
       <section className="mb-16 p-8 sm:p-10 bg-brand-surface hand-drawn-border shadow-offset-lavender relative overflow-hidden">
         <div className="absolute -top-6 -right-6 opacity-5 text-[120px] select-none pointer-events-none">✦</div>
         <div className="flex items-center gap-3 mb-2">
@@ -351,7 +351,7 @@ export const ActionGuide: React.FC = () => {
                 : '『嘿，我想跟你聊聊，我最近在「世代標籤」網站上看到一個有趣的話題...』'}
             </p>
             <p className="text-[10px] uppercase font-sans font-bold tracking-[0.2em] text-brand-primary/50">
-              {en ? 'Use the AI Spark above to get a personalised version ↑' : '使用上方的 AI 對話啟動器獲得個人化版本 ↑'}
+              {en ? 'Use the Spark above to get a personalised version ↑' : '使用上方的對話啟動器獲得個人化版本 ↑'}
             </p>
           </section>
         </div>
